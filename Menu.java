@@ -137,22 +137,35 @@ public class Menu extends Application {
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
         
+        String[] res = dbh.gettest(0); //Consultamos en la base de datos
+        //Creamos el Label para la pregunta
+        Label lblPregunta = new Label(res[1]);
+        lblPregunta.setMinWidth(10);
+        lblPregunta.setAlignment(Pos.BOTTOM_RIGHT);
+        
         //Creamos los radio buttons
+        final ToggleGroup group = new ToggleGroup();
         rdbtn1 = new RadioButton();
-        String res = dbh.getkankun("つき");
-        rdbtn1.setText(res);
+        rdbtn1.setToggleGroup(group); 
+        rdbtn1.setText(res[2]);
         rdbtn2 = new RadioButton();
-        rdbtn2.setText("Opcion2");
+        rdbtn2.setToggleGroup(group);
+        rdbtn2.setText(res[3]);
         rdbtn3 = new RadioButton();
-        rdbtn3.setText("Opcion3");
+        rdbtn3.setToggleGroup(group);
+        rdbtn3.setText(res[4]);
+        
+        //Creamos el panel del label de la pregunta
+        HBox panePreguntaT1 = new HBox(20,lblPregunta);
+        panePreguntaT1.setPadding(new Insets(10));
         
         //Creamos el panel de los botones
-        HBox paneTest1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3, btnMPrincipal);
-        paneTest1.setPadding(new Insets(10));
-        paneTest1.setAlignment(Pos.BASELINE_RIGHT);
+        HBox paneRespuestasT1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3, btnMPrincipal);
+        paneRespuestasT1.setPadding(new Insets(10));
+        paneRespuestasT1.setAlignment(Pos.BASELINE_RIGHT);
 
         //Añadimos el paneBuscar y el paneKanji a un VBox
-        VBox paneMTest1 = new VBox(10,paneTest1);
+        VBox paneMTest1 = new VBox(10,panePreguntaT1,paneRespuestasT1);
         
         //Definimos el Scene
         sceneTest1 = new  Scene(paneMTest1,300,100);
