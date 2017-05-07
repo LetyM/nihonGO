@@ -23,11 +23,16 @@ public class Menu extends Application {
     private Button btnMBusqueda;
     private Button btnMPrincipal;
     private Button btnMTest1;
+    private Button btnMTest2;
     
     //Elementos de la ventada de Test1
     private RadioButton rdbtn1;
     private RadioButton rdbtn2;
     private RadioButton rdbtn3;
+    private Button btnSiguiente;
+    
+    //Elementos de la ventana de Test2
+    private TextField txtRespuesta;
     
     //Elementos de la ventana de Busqueda
     private Button btnBuscar;
@@ -40,6 +45,7 @@ public class Menu extends Application {
     private Scene sceneBuscar;  //Pantalla de Busqueda
     private Scene sceneTest;   //Pantalla Test
     private Scene sceneTest1;  //Pantalla Test1
+    private Scene sceneTest2;  //Pantalla Test2
     
     //Creamos el metodo start
     //Aqui creamos los elementos de la interfaz que interactua con el usuario
@@ -112,17 +118,23 @@ public class Menu extends Application {
         //Definimos el Scene
         sceneBuscar = new  Scene(paneMBuscar,300,100);
         
+        
+        
         //********************** MENU TEST ***********************************************       
         //Creamos el botón de Test1
         btnMTest1 = new Button("Test1");
         btnMTest1.setOnAction(e -> SwitchTest1()); 
+        
+        //Creamos el botón de Test2
+        btnMTest2 = new Button("Test2");
+        btnMTest2.setOnAction(e-> SwitchTest2());
         
         //Creamos el botón para volver al Menú Principal
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
          
         //Creamos el panel de los botones
-        HBox paneTest = new HBox(20, btnMTest1, btnMPrincipal);
+        HBox paneTest = new HBox(20, btnMTest1, btnMTest2, btnMPrincipal);
         paneTest.setPadding(new Insets(10));
         paneTest.setAlignment(Pos.BASELINE_RIGHT);
 
@@ -134,42 +146,89 @@ public class Menu extends Application {
         
         //********************** MENU TEST 1 ***********************************************       
         //Creamos el botón para volver al Menú Principal
-        btnMPrincipal = new Button("Volver");
-        btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
+        //btnMPrincipal = new Button("Menu Principal");
+        //btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
+        
+        //Creamos el boton para volver a la Pantalla de los Test
+        btnMTest = new Button("Volver");
+        btnMTest.setOnAction(e -> SwitchTest());
+        
+        //Creamos el boton para pasar a la siguiente pregunta
+        btnSiguiente = new Button("Aceptar");
+        btnSiguiente.setOnAction(e-> SwitchSiguiente());
         
         String[] res = dbh.gettest(0); //Consultamos en la base de datos
         //Creamos el Label para la pregunta
-        Label lblPregunta = new Label(res[1]);
-        lblPregunta.setMinWidth(10);
-        lblPregunta.setAlignment(Pos.BOTTOM_RIGHT);
+        Label lblPreguntaT1 = new Label(res[0]);
+        lblPreguntaT1.setMinWidth(10);
+        lblPreguntaT1.setAlignment(Pos.BOTTOM_RIGHT);
         
         //Creamos los radio buttons
         final ToggleGroup group = new ToggleGroup();
         rdbtn1 = new RadioButton();
         rdbtn1.setToggleGroup(group); 
-        rdbtn1.setText(res[2]);
+        rdbtn1.setText(res[1]);
         rdbtn2 = new RadioButton();
         rdbtn2.setToggleGroup(group);
-        rdbtn2.setText(res[3]);
+        rdbtn2.setText(res[2]);
         rdbtn3 = new RadioButton();
         rdbtn3.setToggleGroup(group);
-        rdbtn3.setText(res[4]);
+        rdbtn3.setText(res[3]);
         
         //Creamos el panel del label de la pregunta
-        HBox panePreguntaT1 = new HBox(20,lblPregunta);
+        HBox panePreguntaT1 = new HBox(20,lblPreguntaT1);
         panePreguntaT1.setPadding(new Insets(10));
         
-        //Creamos el panel de los botones
-        HBox paneRespuestasT1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3, btnMPrincipal);
+        //Creamos el panel con las respuestas
+        HBox paneRespuestasT1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3);
         paneRespuestasT1.setPadding(new Insets(10));
         paneRespuestasT1.setAlignment(Pos.BASELINE_RIGHT);
+        
+        //Creamos el panel con los botones
+        HBox paneBotonesT1 = new HBox(20,btnMTest,btnSiguiente);
+        paneBotonesT1.setPadding(new Insets(10));
 
         //Añadimos el paneBuscar y el paneKanji a un VBox
-        VBox paneMTest1 = new VBox(10,panePreguntaT1,paneRespuestasT1);
+        VBox paneMTest1 = new VBox(10,panePreguntaT1,paneRespuestasT1,paneBotonesT1);
         
         //Definimos el Scene
-        sceneTest1 = new  Scene(paneMTest1,300,100);
-     
+        sceneTest1 = new  Scene(paneMTest1,300,200); 
+        
+        //********************** MENU TEST 2 ***********************************************       
+        //Creamos el boton para volver a la Pantalla de los Test
+        btnMTest = new Button("Volver");
+        btnMTest.setOnAction(e -> SwitchTest());
+        
+        //Creamos el boton para pasar a la siguiente pregunta
+        btnSiguiente = new Button("Aceptar");
+        btnSiguiente.setOnAction(e-> SwitchSiguiente());
+        
+        //Creamos el Label para la pregunta
+        Label lblPreguntaT2 = new Label(res[0]);
+        lblPreguntaT2.setMinWidth(10);
+        lblPreguntaT2.setAlignment(Pos.BOTTOM_RIGHT);
+        
+        //Creamos la caja de texo para la respuesta
+        txtRespuesta = new TextField();
+        
+        //Creamos el panel del label de la pregunta
+        HBox panePreguntaT2 = new HBox(20,lblPreguntaT2);
+        panePreguntaT2.setPadding(new Insets(10));
+        
+        //Creamos el panel del label de la respuesta
+        HBox paneRespuestasT2 = new HBox(20, txtRespuesta);
+        paneRespuestasT2.setPadding(new Insets(10));
+        paneRespuestasT2.setAlignment(Pos.BASELINE_RIGHT);
+        
+        //Creamos el panel con los botones
+        HBox paneBotonesT2 = new HBox(20,btnMTest,btnSiguiente);
+        paneBotonesT2.setPadding(new Insets(10));
+
+        //Añadimos el paneBuscar y el paneKanji a un VBox
+        VBox paneMTest2 = new VBox(10,panePreguntaT2,paneRespuestasT2,paneBotonesT2);
+        
+        //Definimos el Scene
+        sceneTest2 = new  Scene(paneMTest2,300,200);  
     }
     
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  
@@ -211,10 +270,22 @@ public class Menu extends Application {
      
     //Para Ir al Menu del Test1
      public void SwitchTest1()
-     {
+     {  
       stage.setScene(sceneTest1);
      }
      
+     //Para Ir a la siguiente pregunta
+     public void SwitchSiguiente()
+     {
+      stage.setScene(sceneTest1);  
+     }
+     
+     //Para Ir al Menu del Test2
+     public void SwitchTest2()
+     {  
+      stage.setScene(sceneTest2);
+     }
+
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+       
    
     //MAIN

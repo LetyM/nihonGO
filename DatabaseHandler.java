@@ -54,36 +54,27 @@ public class DatabaseHandler implements IDatabaseHandler {
       }
      return OutKanji;
     }
-    
-   /**
+    /**
    * Seleccionamos de la tabla de test las opciones y respuesta para una pregunta dada
    * @param InPregunta 
    * @return OutRespuesta, OutOpcion1, OutOpcion2
    */ 
     public String[] gettest(Integer InPregunta){
-      String[] OutPregunta = new String[5];
-      String OutConcepto = null;
-      String OutRespuesta = null;
-      String OutOpcion1 = null;
-      String OutOpcion2 = null;
+      String[] OutPregunta = new String[4];
       try{
           ResultSet rs;
           rs = stmt.executeQuery("SELECT pregunta, respuesta, Opcion1, Opcion2 FROM test WHERE codigo = "+InPregunta+"" ); 
           rs.next(); //Introducimos esto para que apunte bien, no lo estaba haciendo
-          OutConcepto = rs.getString(1);
-          OutRespuesta = rs.getString(2);
-          OutOpcion1 = rs.getString(3);
-          OutOpcion2 = rs.getString(4);
+          for (int i=0; i<4; i++){
+            OutPregunta[i] = rs.getString(i+1);
+          }
       }
       catch(SQLException e){
           System.out.println("Error en la obtencion del dato");
       }
-      OutPregunta[1] = OutConcepto;
-      OutPregunta[2] = OutRespuesta;
-      OutPregunta[3] = OutOpcion1;
-      OutPregunta[4] = OutOpcion2;
      return OutPregunta;
     }
+ 
 }
  
 

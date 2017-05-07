@@ -6,6 +6,6 @@ package database;
  */
 public interface IDatabaseHandler {
     /*kunyomi->kanji  kanji->kunyomi*/
-   public String getkankun(String InKanji); 
+   public String getkankun(String cod); 
    public String[] gettest(Integer InPregunta);
 }
