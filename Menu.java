@@ -20,21 +20,23 @@ public class Menu extends Application {
     
     //Botones de cambio de ventana
     private Button btnMTest;
-    private Button btnMBusqueda;
+    //private Button btnMBusqueda;
     private Button btnMPrincipal;
     private Button btnMTest1;
     private Button btnMTest2;
     private Button btnMLeccion;
+    private Button btnMCrearLeccion;
     private Button btnMLeccion1;
     
-    //Elementos de la ventana de Leccion1
+    //Elementos de la ventana de Crear Leccion
+    private TextField txtCLeccion;
     
     //Elementos de la ventada de Test1
     private RadioButton rdbtn1;
     private RadioButton rdbtn2;
     private RadioButton rdbtn3;
     private Button btnSiguiente;
-    
+    private Button btnMBusqueda = new Button("Busqueda");
     //Elementos de la ventana de Test2
     private TextField txtRespuesta;
     
@@ -45,56 +47,66 @@ public class Menu extends Application {
     
    //El Stage y las distintas Scenes
     private Stage stage;
-    private Scene sceneMP;      //Menu Principal
-    private Scene sceneBuscar;  //Pantalla de Busqueda
-    private Scene sceneLeccion; //Pantalla Leccion
-    private Scene sceneTest;   //Pantalla Test
-    private Scene sceneTest1;  //Pantalla Test1
-    private Scene sceneTest2;  //Pantalla Test2
+    private Scene sceneMP;       //Menu Principal
+    private Scene sceneBuscar;   //Pantalla de Busqueda
+    private Scene sceneLeccion;  //Pantalla Leccion
+    private Scene sceneCLeccion; //Pantalla Crear Leccion
+    private Scene sceneTest;     //Pantalla Test
+    private Scene sceneTest1;    //Pantalla Test1
+    private Scene sceneTest2;    //Pantalla Test2
     
     //Creamos el metodo start
     //Aqui creamos los elementos de la interfaz que interactua con el usuario
     @Override public void start(Stage primaryStage)
     {
         stage = primaryStage;
+        int ancho = 200;
+        int largo = 250;
         
         //Creamos el DatebaseHandler
         dbh = new DatabaseHandler();
         
         //********************** MENU PRINCIPAL ***********************************************
         //BOTONES
-        btnMBusqueda = new Button("Diccionario");
+        //btnMBusqueda = new Button("Busqueda");
         btnMBusqueda.setOnAction(e -> SwitchBusquedaKanji());
         btnMTest = new Button("Test");
         btnMTest.setOnAction(e -> SwitchTest());
         btnMLeccion = new Button("Lecciones");
         btnMLeccion.setOnAction(e-> SwitchLeccion());
         
-        //Creamos el panel del botón
-        HBox paneMenuBuscar = new HBox(20, btnMBusqueda,btnMTest,btnMLeccion);
+        //Creamos los paneles
+        HBox paneMenuBuscar = new HBox(20, btnMBusqueda);
         paneMenuBuscar.setPadding(new Insets(10));
         paneMenuBuscar.setAlignment(Pos.BOTTOM_CENTER);
+        
+        HBox paneMenuTest = new HBox(20,btnMTest);
+        paneMenuTest.setPadding(new Insets(10));
+        paneMenuTest.setAlignment(Pos.CENTER);
+        
+        HBox paneMenuLeccion = new HBox(20, btnMLeccion);
+        paneMenuLeccion.setPadding(new Insets(10));
+        paneMenuLeccion.setAlignment(Pos.TOP_CENTER);
 
         //Añadimos paneMenuBuscar VBox
-        VBox paneMP = new VBox(10,paneMenuBuscar);
+        VBox paneMP = new VBox(10,paneMenuLeccion,paneMenuTest,paneMenuBuscar);
         
         //Finalizamos y mostramos
-        sceneMP = new  Scene(paneMP,200,300);
+        sceneMP = new  Scene(paneMP,ancho,largo);
         primaryStage.setTitle("NihonGO");
         primaryStage.setScene(sceneMP);
         primaryStage.show();
         
-        //********************** MENU DICCIONARIO ***********************************************
+        //********************** MENU BUSCAR ***********************************************
         //Creamos el Label para el Kanji
         Label lblKanji = new Label("Kanji");
         lblKanji.setMinWidth(10);
-        lblKanji.setAlignment(Pos.BOTTOM_CENTER);
+        lblKanji.setAlignment(Pos.TOP_CENTER);
         
         //Creamos el campo en el que se escribe la entrada
         txtKanjiEntrada = new TextField();
         txtKanjiEntrada.setMinWidth(50);
         txtKanjiEntrada.setMaxWidth(50);
-        //txtKanjiEntrada.setPromptText("Introduzca codigo del kanji");
         
         //Creamos el campo en el que se devuelve el resultado
         txtKanjiSalida = new TextField();
@@ -110,44 +122,88 @@ public class Menu extends Application {
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
         
-        //Creamos el panel del txtKanji
-        HBox paneKanji = new HBox(20,lblKanji,txtKanjiEntrada,txtKanjiSalida);
-        paneKanji.setPadding(new Insets(10));
-        
-        //Creamos el panel de los botones
-        HBox paneBuscar = new HBox(20, btnBuscar, btnMPrincipal);
+        //Creamos el panel del txtKanjiEntrada y el boton Buscar
+        HBox paneBuscar = new HBox(20,lblKanji,txtKanjiEntrada,btnBuscar);
         paneBuscar.setPadding(new Insets(10));
-        paneBuscar.setAlignment(Pos.BOTTOM_CENTER);
+        paneBuscar.setAlignment(Pos.CENTER);
+        
+        //Creamos el panel del txtKanjiSalida
+        HBox paneResultado = new HBox(20,txtKanjiSalida);
+        paneResultado.setPadding(new Insets(10));
+        paneResultado.setAlignment(Pos.BOTTOM_LEFT);
+        
+        //Creamos el panel con el boton para volver al Menu Principal
+        HBox paneVolver = new HBox(20,btnMPrincipal);
+        paneVolver.setPadding(new Insets(10));
+        paneVolver.setAlignment(Pos.BASELINE_RIGHT);
 
         //Añadimos el paneBuscar y el paneKanji a un VBox
-        VBox paneMBuscar = new VBox(10,paneKanji, paneBuscar);
+        VBox paneMBuscar = new VBox(10, paneBuscar, paneResultado, paneVolver);
         
         //Definimos el Scene
-        sceneBuscar = new  Scene(paneMBuscar,200,300);
+        sceneBuscar = new  Scene(paneMBuscar,ancho,largo);
         
          //********************** MENU LECCION ***********************************************       
         //Creamos el botón de Leccion1
         btnMLeccion1 = new Button("Leccion1");
-        //btnMLeccion1.setOnAction(e -> SwitchLeccion1()); 
+        //btnMLeccion1.setOnAction(e -> SwitchLeccion1());
         
-        //Creamos el botón de Test2
-        //btnMTest2 = new Button("Test2");
-        //btnMTest2.setOnAction(e-> SwitchTest2());
+        //Creamos el boton CrearLeccion
+        btnMCrearLeccion = new Button("Crear Leccion");
+        btnMCrearLeccion.setOnAction(e-> SwitchCrearLeccion());
+        
         
         //Creamos el botón para volver al Menú Principal
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
          
-        //Creamos el panel de los botones
-        HBox paneLeccion = new HBox(20, btnMLeccion1, btnMPrincipal);
-        paneLeccion.setPadding(new Insets(10));
-        paneLeccion.setAlignment(Pos.BOTTOM_CENTER);
+        //Creamos los paneles de los botones
+        HBox paneMLeccion1 = new HBox(20, btnMLeccion1);
+        paneMLeccion1.setPadding(new Insets(10));
+        paneMLeccion1.setAlignment(Pos.BOTTOM_CENTER);
+        
+        HBox paneMCrearLeccion = new HBox(20,btnMCrearLeccion, btnMPrincipal);
+        paneMCrearLeccion.setPadding(new Insets(10));
+        paneMCrearLeccion.setAlignment(Pos.BOTTOM_CENTER);
 
         //Añadimos el paneBuscar y el paneKanji a un VBox
-        VBox paneMLeccion = new VBox(10,paneLeccion);
+        VBox paneMLeccion = new VBox(10,paneMLeccion1,paneMCrearLeccion);
         
         //Definimos el Scene
-        sceneLeccion = new  Scene(paneMLeccion,200,300);       
+        sceneLeccion = new  Scene(paneMLeccion,ancho,largo);  
+        
+        //********************** MENU CREAR LECCION ***********************************************       
+        //Creamos el campo para el Nombre de la Leccion
+        Label lblCLeccion = new Label("Nombre Leccion");
+        lblCLeccion.setMinWidth(10);
+        lblCLeccion.setAlignment(Pos.TOP_CENTER);
+        txtCLeccion = new TextField();
+        txtCLeccion.setMinWidth(50);
+        txtCLeccion.setMaxWidth(50);
+        
+        //Creamos los botones para seleccionar los elementos a añadir
+        //y las etiquietas con los nombres
+        //btnMCrearLeccion = new Button("Crear Leccion");
+        //btnMCrearLeccion.setOnAction(e-> SwitchCrearLeccion());
+        
+        //Creamos el boton Aceptar
+        
+        //Creamos el boton Seleccionar Todo
+        
+        //Creamos el botón para volver al Menú Principal
+        //btnMPrincipal = new Button("Volver");
+        //btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
+         
+        //Creamos el panel para dar nombre a la leccion
+        HBox paneNCLeccion = new HBox(20, lblCLeccion, txtCLeccion);
+        paneNCLeccion.setPadding(new Insets(10));
+        paneNCLeccion.setAlignment(Pos.BOTTOM_CENTER);
+
+        //Añadimos el paneBuscar y el paneKanji a un VBox
+        VBox paneMCLeccion = new VBox(10,paneNCLeccion);
+        
+        //Definimos el Scene
+        sceneCLeccion = new  Scene(paneMCLeccion,ancho,largo); 
         
         
         //********************** MENU TEST ***********************************************       
@@ -163,16 +219,24 @@ public class Menu extends Application {
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
          
-        //Creamos el panel de los botones
-        HBox paneTest = new HBox(20, btnMTest1, btnMTest2, btnMPrincipal);
-        paneTest.setPadding(new Insets(10));
-        paneTest.setAlignment(Pos.BOTTOM_CENTER);
+        //Creamos los paneles
+        HBox paneTest1 = new HBox(20, btnMTest1);
+        paneTest1.setPadding(new Insets(10));
+        paneTest1.setAlignment(Pos.TOP_CENTER);
 
+        HBox paneTest2 = new HBox(20, btnMTest2);
+        paneTest2.setPadding(new Insets(10));
+        paneTest2.setAlignment(Pos.CENTER);
+        
+        HBox paneVolverMenu = new HBox(20, btnMPrincipal);
+        paneVolverMenu.setPadding(new Insets(10));
+        paneVolverMenu.setAlignment(Pos.BOTTOM_CENTER);
+        
         //Añadimos el paneBuscar y el paneKanji a un VBox
-        VBox paneMTest = new VBox(10,paneTest);
+        VBox paneMTest = new VBox(10,paneTest1,paneTest2,paneVolverMenu);
         
         //Definimos el Scene
-        sceneTest = new  Scene(paneMTest,200,300);
+        sceneTest = new  Scene(paneMTest,ancho,largo);
         
         //********************** MENU TEST 1 ***********************************************       
         //Creamos el botón para volver al Menú Principal
@@ -222,7 +286,7 @@ public class Menu extends Application {
         VBox paneMTest1 = new VBox(10,panePreguntaT1,paneRespuestasT1,paneBotonesT1);
         
         //Definimos el Scene
-        sceneTest1 = new  Scene(paneMTest1,200,300); 
+        sceneTest1 = new  Scene(paneMTest1,ancho,largo); 
         
         //********************** MENU TEST 2 ***********************************************       
         //Creamos el boton para volver a la Pantalla de los Test
@@ -258,7 +322,7 @@ public class Menu extends Application {
         VBox paneMTest2 = new VBox(10,panePreguntaT2,paneRespuestasT2,paneBotonesT2);
         
         //Definimos el Scene
-        sceneTest2 = new  Scene(paneMTest2,200,300);  
+        sceneTest2 = new  Scene(paneMTest2,ancho,largo);  
     }
     
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  
@@ -292,10 +356,16 @@ public class Menu extends Application {
       stage.setScene(sceneBuscar);     
     }
     
-     //Para Ir al Menu de los Test
+     //Para Ir al Menu de las Lecciones
      public void SwitchLeccion()
      {
       stage.setScene(sceneLeccion);
+     }
+     
+    //Para Ir al Menu para crear lecciones
+     public void SwitchCrearLeccion()
+     {
+      stage.setScene(sceneCLeccion);
      }
      
     //Para Ir al Menu de los Test

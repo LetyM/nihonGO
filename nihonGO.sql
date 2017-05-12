@@ -1,8 +1,13 @@
 USE nihongo;
 CREATE TABLE IF NOT EXISTS lecciones(
-	numero INTEGER(4) NOT NULL PRIMARY KEY,
-	tamaño INTEGER(10) NOT NULL,
-	conceptos INTEGER(10) NOT NULL);
+	codigo INTEGER(20) NOT NULL PRIMARY KEY,
+	pregunta VARCHAR(30) NOT NULL,
+    respuesta VARCHAR(10) NOT NULL,
+    opcion1 VARCHAR(10) NOT NULL,
+    opcion2 VARCHAR(10) NOT NULL,
+    nivel INTEGER(10),
+    fecha DATETIME
+);
     
 CREATE TABLE IF NOT EXISTS vocabulario(
 	codigo INTEGER(20) NOT NULL PRIMARY KEY,
@@ -30,3 +35,14 @@ CREATE TABLE IF NOT EXISTS usuario(
     usuario VARCHAR(20) NOT NULL,
 	mail VARCHAR(100) NOT NULL,
 	psswd VARCHAR(20) NOT NULL);
+    
+CREATE TABLE IF NOT EXISTS test(
+	codigo INTEGER(20) NOT NULL PRIMARY KEY,
+	pregunta VARCHAR(30) NOT NULL,
+    respuesta VARCHAR(10) NOT NULL,
+    opcion1 VARCHAR(10) NOT NULL,
+    opcion2 VARCHAR(10) NOT NULL,
+    codigo_test INTEGER(20) NOT NULL, #codigo del test al que pertenece
+    nivel INTEGER(10),
+    fecha DATETIME
+);

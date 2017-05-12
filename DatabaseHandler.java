@@ -57,7 +57,7 @@ public class DatabaseHandler implements IDatabaseHandler {
     /**
    * Seleccionamos de la tabla de test las opciones y respuesta para una pregunta dada
    * @param InPregunta 
-   * @return OutRespuesta, OutOpcion1, OutOpcion2
+   * @return OutPregunta
    */ 
     public String[] gettest(Integer InPregunta){
       String[] OutPregunta = new String[4];
