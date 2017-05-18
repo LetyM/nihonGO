@@ -36,6 +36,8 @@ public class Menu extends Application {
     private RadioButton rdbtn2;
     private RadioButton rdbtn3;
     private Button btnSiguiente;
+    VBox paneMTest1 = new VBox(10);
+    HBox paneRespuestasT1 = new HBox(10);
     
     //Elementos de la ventana de Test2
     private TextField txtRespuesta;
@@ -81,7 +83,7 @@ public class Menu extends Application {
         
         //Añadimos los botones al panel
         //VBox paneMP = new VBox(10,lblMenuPrincipal,btnMLeccion,btnMTest,btnMBusqueda);
-        VBox paneMP = new VBox(10,lblMenuPrincipal,btnMLeccion,btnMTest);
+        VBox paneMP = new VBox(10,lblMenuPrincipal,btnMLeccion,btnMTest,btnMBusqueda);
         //paneMP.getChildren().addAll(btnMBusqueda);
         paneMP.setSpacing(space);
         paneMP.setAlignment(Pos.CENTER);
@@ -240,7 +242,8 @@ public class Menu extends Application {
         rdbtn3.setText(res[3]);
 
         //Creamos el panel con las respuestas
-        HBox paneRespuestasT1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3);
+        //HBox paneRespuestasT1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3);
+        paneRespuestasT1.getChildren().addAll(rdbtn1, rdbtn2, rdbtn3);
         paneRespuestasT1.setPadding(new Insets(10));
         paneRespuestasT1.setAlignment(Pos.BASELINE_RIGHT);
         
@@ -250,7 +253,7 @@ public class Menu extends Application {
         paneBotonesT1.setAlignment(Pos.CENTER_RIGHT);
 
         //Añadimos el VBox
-        VBox paneMTest1 = new VBox(10,lblPreguntaT1,paneRespuestasT1,paneBotonesT1);
+        paneMTest1.getChildren().addAll(lblPreguntaT1,paneRespuestasT1,paneBotonesT1);
         paneMTest1.setSpacing(space);
         paneMTest1.setAlignment(Pos.CENTER);
         
@@ -351,7 +354,26 @@ public class Menu extends Application {
      //Para Ir a la siguiente pregunta
      public void SwitchSiguiente()
      {
-      stage.setScene(sceneTest1);  
+        String[] res = dbh.gettest(1); //Consultamos en la base de datos
+      //Creamos el Label para la pregunta
+       Label lblPreguntaT1 = new Label(res[0]);
+       lblPreguntaT1.setMinWidth(10);
+       lblPreguntaT1.setAlignment(Pos.BOTTOM_CENTER);
+        
+       //Creamos los radio buttons
+        final ToggleGroup group = new ToggleGroup();
+        rdbtn1 = new RadioButton();
+        rdbtn1.setToggleGroup(group); 
+        rdbtn1.setText(res[1]);
+        rdbtn2 = new RadioButton();
+        rdbtn2.setToggleGroup(group);
+        rdbtn2.setText(res[2]);
+        rdbtn3 = new RadioButton();
+        rdbtn3.setToggleGroup(group);
+        rdbtn3.setText(res[3]);
+
+        paneRespuestasT1.getChildren().clear();
+        paneRespuestasT1.getChildren().addAll(rdbtn1, rdbtn2, rdbtn3);
      }
      
      //Para Ir al Menu del Test2
