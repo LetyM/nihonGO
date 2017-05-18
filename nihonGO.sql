@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS test(
     respuesta VARCHAR(10) NOT NULL,
     opcion1 VARCHAR(10) NOT NULL,
     opcion2 VARCHAR(10) NOT NULL,
-    codigo_test INTEGER(20) NOT NULL, #codigo del test al que pertenece
-    nivel INTEGER(10),
+    nivel INTEGER(10), #nivel adquirido por el usuario
     fecha DATETIME
 );
