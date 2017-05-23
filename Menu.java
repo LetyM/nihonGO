@@ -2,6 +2,7 @@ package Paneles;
 
 import database.*;
 import javafx.application.*;
+import static javafx.application.Application.launch;
 import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
@@ -32,10 +33,15 @@ public class Menu extends Application {
     private TextField txtCLeccion;
     
     //Elementos de la ventada de Test1
-    private RadioButton rdbtn1;
-    private RadioButton rdbtn2;
-    private RadioButton rdbtn3;
+    RadioButton rdbtn1 = new RadioButton();
+    RadioButton rdbtn2 = new RadioButton();
+    RadioButton rdbtn3 = new RadioButton();
+    final ToggleGroup group = new ToggleGroup();
+//    private RadioButton rdbtn1;
+//    private RadioButton rdbtn2;
+//    private RadioButton rdbtn3;
     private Button btnSiguiente;
+    Label lblPreguntaT1 = new Label();
     VBox paneMTest1 = new VBox(10);
     HBox paneRespuestasT1 = new HBox(10);
     
@@ -81,7 +87,7 @@ public class Menu extends Application {
         btnMLeccion = new Button("Lecciones");
         btnMLeccion.setOnAction(e-> SwitchLeccion());
         
-        //Añadimos los botones al panel
+        //AÃ±adimos los botones al panel
         //VBox paneMP = new VBox(10,lblMenuPrincipal,btnMLeccion,btnMTest,btnMBusqueda);
         VBox paneMP = new VBox(10,lblMenuPrincipal,btnMLeccion,btnMTest,btnMBusqueda);
         //paneMP.getChildren().addAll(btnMBusqueda);
@@ -111,11 +117,11 @@ public class Menu extends Application {
         txtKanjiSalida.setMaxWidth(100);
         txtKanjiSalida.setEditable(false);
         
-        //Creamos el botón de Busqueda
+        //Creamos el botÃ³n de Busqueda
         btnBuscar = new Button("Buscar");
         btnBuscar.setOnAction(e -> ClickedBuscar()); 
   
-        //Creamos el botón para volver al Menú Principal
+        //Creamos el botÃ³n para volver al MenÃº Principal
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
         
@@ -133,7 +139,7 @@ public class Menu extends Application {
         sceneBuscar = new  Scene(paneMBuscar,ancho,largo);
         
          //********************** MENU LECCION ***********************************************       
-        //Creamos el botón de Leccion1
+        //Creamos el botÃ³n de Leccion1
         btnMLeccion1 = new Button("Leccion1");
         //btnMLeccion1.setOnAction(e -> SwitchLeccion1());
         
@@ -141,11 +147,11 @@ public class Menu extends Application {
         btnMCrearLeccion = new Button("Crear Leccion");
         btnMCrearLeccion.setOnAction(e-> SwitchCrearLeccion());
             
-        //Creamos el botón para volver al Menú Principal
+        //Creamos el botÃ³n para volver al MenÃº Principal
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
 
-        //Añadimos el paneBuscar y el paneKanji a un VBox
+        //AÃ±adimos el paneBuscar y el paneKanji a un VBox
         VBox paneMLeccion = new VBox(10,btnMLeccion1,btnMCrearLeccion, btnMPrincipal);
         paneMLeccion.setSpacing(space);
         paneMLeccion.setAlignment(Pos.CENTER);
@@ -162,7 +168,7 @@ public class Menu extends Application {
         txtCLeccion.setMinWidth(50);
         txtCLeccion.setMaxWidth(50);
         
-        //Creamos los botones para seleccionar los elementos a añadir
+        //Creamos los botones para seleccionar los elementos a aÃ±adir
         //y las etiquietas con los nombres
         //btnMCrearLeccion = new Button("Crear Leccion");
         //btnMCrearLeccion.setOnAction(e-> SwitchCrearLeccion());
@@ -171,7 +177,7 @@ public class Menu extends Application {
         
         //Creamos el boton Seleccionar Todo
         
-        //Creamos el botón para volver al Menú de lecciones
+        //Creamos el botÃ³n para volver al MenÃº de lecciones
         btnMLeccion = new Button("Volver");
         btnMLeccion.setOnAction(e -> SwitchLeccion()); 
          
@@ -180,7 +186,7 @@ public class Menu extends Application {
         paneNCLeccion.setPadding(new Insets(10));
         paneNCLeccion.setAlignment(Pos.BOTTOM_CENTER);
 
-        //Añadimos el paneBuscar y el paneKanji a un VBox
+        //AÃ±adimos el paneBuscar y el paneKanji a un VBox
         VBox paneMCLeccion = new VBox(10,paneNCLeccion,btnMLeccion);
         paneMCLeccion.setSpacing(space);
         paneMCLeccion.setAlignment(Pos.CENTER);
@@ -190,19 +196,19 @@ public class Menu extends Application {
         
         
         //********************** MENU TEST ***********************************************       
-        //Creamos el botón de Test1
+        //Creamos el botÃ³n de Test1
         btnMTest1 = new Button("Test1");
         btnMTest1.setOnAction(e -> SwitchTest1()); 
         
-        //Creamos el botón de Test2
+        //Creamos el botÃ³n de Test2
         btnMTest2 = new Button("Test2");
         btnMTest2.setOnAction(e-> SwitchTest2());
         
-        //Creamos el botón para volver al Menú Principal
+        //Creamos el botÃ³n para volver al MenÃº Principal
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
          
-        //Añadimos los botones a un VBox
+        //AÃ±adimos los botones a un VBox
         VBox paneMTest = new VBox(10,btnMTest1,btnMTest2,btnMPrincipal);
         paneMTest.setSpacing(space);
         paneMTest.setAlignment(Pos.CENTER);
@@ -211,10 +217,6 @@ public class Menu extends Application {
         sceneTest = new  Scene(paneMTest,ancho,largo);
         
         //********************** MENU TEST 1 ***********************************************       
-        //Creamos el botón para volver al Menú Principal
-        //btnMPrincipal = new Button("Menu Principal");
-        //btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
-        
         //Creamos el boton para volver a la Pantalla de los Test
         btnMTest = new Button("Volver");
         btnMTest.setOnAction(e -> SwitchTest());
@@ -223,23 +225,21 @@ public class Menu extends Application {
         btnSiguiente = new Button("Aceptar");
         btnSiguiente.setOnAction(e-> SwitchSiguiente());
         
-        String[] res = dbh.gettest(0); //Consultamos en la base de datos
-        //Creamos el Label para la pregunta
-        Label lblPreguntaT1 = new Label(res[0]);
-        lblPreguntaT1.setMinWidth(10);
-        lblPreguntaT1.setAlignment(Pos.BOTTOM_CENTER);
+        GeneraTest(0);
         
-        //Creamos los radio buttons
-        final ToggleGroup group = new ToggleGroup();
-        rdbtn1 = new RadioButton();
-        rdbtn1.setToggleGroup(group); 
-        rdbtn1.setText(res[1]);
-        rdbtn2 = new RadioButton();
-        rdbtn2.setToggleGroup(group);
-        rdbtn2.setText(res[2]);
-        rdbtn3 = new RadioButton();
-        rdbtn3.setToggleGroup(group);
-        rdbtn3.setText(res[3]);
+//        String[] res = dbh.gettest(0); //Consultamos en la base de datos
+//        //Creamos el Label para la pregunta
+//        lblPreguntaT1.setText(res[0]);
+//        lblPreguntaT1.setMinWidth(10);
+//        lblPreguntaT1.setAlignment(Pos.BOTTOM_CENTER);
+//        
+//        //Creamos los radio buttons
+//        rdbtn1.setToggleGroup(group); 
+//        rdbtn1.setText(res[1]);
+//        rdbtn2.setToggleGroup(group);
+//        rdbtn2.setText(res[2]);
+//        rdbtn3.setToggleGroup(group);
+//        rdbtn3.setText(res[3]);
 
         //Creamos el panel con las respuestas
         //HBox paneRespuestasT1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3);
@@ -252,7 +252,7 @@ public class Menu extends Application {
         paneBotonesT1.setPadding(new Insets(10));
         paneBotonesT1.setAlignment(Pos.CENTER_RIGHT);
 
-        //Añadimos el VBox
+        //AÃ±adimos el VBox
         paneMTest1.getChildren().addAll(lblPreguntaT1,paneRespuestasT1,paneBotonesT1);
         paneMTest1.setSpacing(space);
         paneMTest1.setAlignment(Pos.CENTER);
@@ -270,9 +270,9 @@ public class Menu extends Application {
         btnSiguiente.setOnAction(e-> SwitchSiguiente());
         
         //Creamos el Label para la pregunta
-        Label lblPreguntaT2 = new Label(res[0]);
-        lblPreguntaT2.setMinWidth(10);
-        lblPreguntaT2.setAlignment(Pos.BOTTOM_CENTER);
+//        Label lblPreguntaT2 = new Label(res[0]);
+//        lblPreguntaT2.setMinWidth(10);
+//        lblPreguntaT2.setAlignment(Pos.BOTTOM_CENTER);
         
         //Creamos la caja de texo para la respuesta
         txtRespuesta = new TextField();
@@ -287,8 +287,8 @@ public class Menu extends Application {
         paneBotonesT2.setPadding(new Insets(10));
         paneBotonesT2.setAlignment(Pos.CENTER_RIGHT);
 
-        //Añadimos el paneBuscar y el paneKanji a un VBox
-        VBox paneMTest2 = new VBox(10,lblPreguntaT2,paneRespuestasT2,paneBotonesT2);
+        //AÃ±adimos el paneBuscar y el paneKanji a un VBox
+        VBox paneMTest2 = new VBox(10,paneRespuestasT2,paneBotonesT2); //,lblPreguntaT2
         paneMTest2.setSpacing(space);
         paneMTest2.setAlignment(Pos.CENTER);
         
@@ -298,7 +298,25 @@ public class Menu extends Application {
     
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  
     
-    //Creamos la funcion para cuando pulsan el botón Buscar
+    //Función que genera la pregunta del test
+    public void GeneraTest(int i)
+    {
+      String[] res = dbh.gettest(i); //Consultamos en la base de datos
+       //Creamos el Label para la pregunta 
+        lblPreguntaT1.setText(res[0]);
+        
+       //Creamos los radio buttons
+        rdbtn1.setToggleGroup(group); 
+        rdbtn1.setText(res[1]);
+        rdbtn2.setToggleGroup(group);
+        rdbtn2.setText(res[2]);
+        rdbtn3.setToggleGroup(group);
+        rdbtn3.setText(res[3]);  
+    }
+    
+    
+ //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+     
+    //Creamos la funcion para cuando pulsan el boton Buscar
     public void ClickedBuscar()
     {
         if ("Buscar".equals(btnBuscar.getText()))
@@ -348,32 +366,14 @@ public class Menu extends Application {
     //Para Ir al Menu del Test1
      public void SwitchTest1()
      {  
+      GeneraTest(0);   
       stage.setScene(sceneTest1);
      }
      
      //Para Ir a la siguiente pregunta
      public void SwitchSiguiente()
      {
-        String[] res = dbh.gettest(1); //Consultamos en la base de datos
-      //Creamos el Label para la pregunta
-       Label lblPreguntaT1 = new Label(res[0]);
-       lblPreguntaT1.setMinWidth(10);
-       lblPreguntaT1.setAlignment(Pos.BOTTOM_CENTER);
-        
-       //Creamos los radio buttons
-        final ToggleGroup group = new ToggleGroup();
-        rdbtn1 = new RadioButton();
-        rdbtn1.setToggleGroup(group); 
-        rdbtn1.setText(res[1]);
-        rdbtn2 = new RadioButton();
-        rdbtn2.setToggleGroup(group);
-        rdbtn2.setText(res[2]);
-        rdbtn3 = new RadioButton();
-        rdbtn3.setToggleGroup(group);
-        rdbtn3.setText(res[3]);
-
-        paneRespuestasT1.getChildren().clear();
-        paneRespuestasT1.getChildren().addAll(rdbtn1, rdbtn2, rdbtn3);
+      GeneraTest(1);
      }
      
      //Para Ir al Menu del Test2

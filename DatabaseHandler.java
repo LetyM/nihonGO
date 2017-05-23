@@ -57,17 +57,15 @@ public class DatabaseHandler implements IDatabaseHandler {
     /**
    * Seleccionamos de la tabla de test las opciones y respuesta para una pregunta dada
    * @param InPregunta 
-   * @return OutPregunta
+   * @return OutRespuesta, OutOpcion1, OutOpcion2
    */ 
     public String[] gettest(Integer InPregunta){
-      int num = 6;
-      String[] OutPregunta = new String[num];
+      String[] OutPregunta = new String[4];
       try{
           ResultSet rs;
-          rs = stmt.executeQuery("SELECT pregunta, respuesta, Opcion1, Opcion2, nivel, fecha"
-                  + " FROM test WHERE codigo = "+InPregunta+"" ); 
+          rs = stmt.executeQuery("SELECT pregunta, respuesta, Opcion1, Opcion2 FROM test WHERE codigo = "+InPregunta+"" ); 
           rs.next(); //Introducimos esto para que apunte bien, no lo estaba haciendo
-          for (int i=0; i<num; i++){
+          for (int i=0; i<4; i++){
             OutPregunta[i] = rs.getString(i+1);
           }
       }
@@ -76,6 +74,7 @@ public class DatabaseHandler implements IDatabaseHandler {
       }
      return OutPregunta;
     }
+ 
 }
  
 
