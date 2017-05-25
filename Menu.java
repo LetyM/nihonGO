@@ -1,6 +1,7 @@
 package Paneles;
 
 import database.*;
+import java.util.Date;
 import javafx.application.*;
 import static javafx.application.Application.launch;
 import javafx.stage.*;
@@ -9,12 +10,15 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+
 /**
  * 
  * @author Secretaria
  */
  
 public class Menu extends Application {
+    
+    
 
     //Enlace con la base de datos
     private IDatabaseHandler dbh;
@@ -301,6 +305,7 @@ public class Menu extends Application {
     //Función que genera la pregunta del test
     public void GeneraTest(int i)
     {
+//      Date fechahoy = new Date();
       String[] res = dbh.gettest(i); //Consultamos en la base de datos
        //Creamos el Label para la pregunta 
         lblPreguntaT1.setText(res[0]);
@@ -373,6 +378,9 @@ public class Menu extends Application {
      //Para Ir a la siguiente pregunta
      public void SwitchSiguiente()
      {
+      rdbtn1.setSelected(false);
+      rdbtn2.setSelected(false);
+      rdbtn3.setSelected(false);
       GeneraTest(1);
      }
      

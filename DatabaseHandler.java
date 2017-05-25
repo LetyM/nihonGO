@@ -74,6 +74,34 @@ public class DatabaseHandler implements IDatabaseHandler {
       }
      return OutPregunta;
     }
+    
+   /**
+   * Seleccionamos de la tabla de test los registros con nivel 0
+   * @param  
+   * @return 
+   */ 
+//    public String[][] getnivel0 (){
+//      String[][] nivel0;
+        int conteo; 
+//      try{
+            
+//          ResultSet rs = stmt.executeQuery("SELECT * FROM test WHERE nivel = 0" ); 
+//          rs.next(); //Introducimos esto para que apunte bien, no lo estaba haciendo
+//          for (int i=0; i<7)
+//          nivel0 = rs.getString(1);
+//      }
+//      catch(SQLException e){
+//        try{
+//              ResultSet rs = stmt.executeQuery("SELECT japones FROM kanji WHERE kunyomi = '"+InKanji+"'" ); 
+//              rs.next(); 
+//              OutKanji = rs.getString(1);
+//        }
+//        catch(SQLException ee){
+//              OutKanji = "Sin resultados";
+//        }
+//      }
+//     return OutKanji;
+//    }
  
 }
  

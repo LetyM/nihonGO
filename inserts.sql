@@ -10,8 +10,10 @@ USE nihongo;
 INSERT INTO kanji VALUES ('0','月','つき','ゲツ ガツ','N5','10');
 INSERT INTO kanji VALUES ('1','日','ひ','ニチ　ジツ','N5','10');
 #	                codigo	pregunta respuesta	opcion1	opcion2	nivel fecha
-INSERT INTO test VALUES (0,'Kunyomi de 月','つき','ひ','つさ',0,'2017-05-10 12:00:00');
-INSERT INTO test VALUES (1,'Kunyomi de 日','ひ','つき','ひき',1,'2017-05-10 12:00:00');
+INSERT INTO test VALUES (0,'Kunyomi de 月','つき','ひ','つさ',0,'2017-05-10');
+INSERT INTO test VALUES (1,'Kunyomi de 日','ひ','つき','ひき',1,'2017-05-10');
 #UPDATE test SET nivel=0 WHERE codigo=0;
+DELETE FROM test WHERE codigo=0;
 
-
+#CREATE TABLE temporal AS
+#SELECT * FROM  test WHERE codigo=0
