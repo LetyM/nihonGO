@@ -38,10 +38,10 @@ CREATE TABLE IF NOT EXISTS usuario(
     
 CREATE TABLE IF NOT EXISTS test(
 	codigo INTEGER(20) NOT NULL PRIMARY KEY,
-	pregunta VARCHAR(30) NOT NULL,
+	enunciado VARCHAR(30) NOT NULL,
     respuesta VARCHAR(10) NOT NULL,
     opcion1 VARCHAR(10) NOT NULL,
     opcion2 VARCHAR(10) NOT NULL,
     nivel INTEGER(10), #nivel adquirido por el usuario
-    fecha DATETIME
+    fecha DATE
 );
