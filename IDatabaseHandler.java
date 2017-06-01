@@ -8,5 +8,5 @@ public interface IDatabaseHandler {
     /*kunyomi->kanji  kanji->kunyomi*/
    public String getkankun(String cod); 
    public String[] gettest(Integer InPregunta);
-   public String[][] getnivel0 ();
+   public TestDia getPreguntas();
 }

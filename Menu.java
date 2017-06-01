@@ -1,4 +1,5 @@
-package Paneles;
+
+    package Paneles;
 
 import database.*;
 import java.util.Date;
@@ -303,7 +304,7 @@ public class Menu extends Application {
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  
     
     //Función que genera la pregunta del test
-    public void GeneraTest(int i)
+    private void GeneraTest(int i)
     {
 //      Date fechahoy = new Date();
       String[] res = dbh.gettest(i); //Consultamos en la base de datos

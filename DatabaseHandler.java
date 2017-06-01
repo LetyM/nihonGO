@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 /**
  *
@@ -80,30 +81,33 @@ public class DatabaseHandler implements IDatabaseHandler {
    * @param  
    * @return 
    */ 
-//    public String[][] getnivel0 (){
-//      String[][] nivel0;
-        int conteo; 
-//      try{
+    public TestDia getPreguntas(){
+        TestDia testdia = new TestDia();
+        String enunciado, respuesta, opcion1, opcion2;
+        int codigo, nivel;
+        Date fecha;
+        Pregunta pregunta;       
+        
+        try{
+            ResultSet rs;
+            rs =stmt.executeQuery("SELECT * FROM test");
+            while (rs.next()){
+                codigo = rs.getInt("codigo");
+                enunciado = rs.getString(2);
+                respuesta = rs.getString(3);
+                opcion1 = rs.getString(4);
+                opcion2 = rs.getString(5);
+                nivel = rs.getInt("nivel");
+                fecha = rs.getDate("fecha");
+                pregunta = new Pregunta(codigo, enunciado, respuesta, opcion1, opcion2, nivel, fecha);
+                testdia.insertarPregunta(pregunta);
+            }        
+        }
+        catch(SQLException e){
             
-//          ResultSet rs = stmt.executeQuery("SELECT * FROM test WHERE nivel = 0" ); 
-//          rs.next(); //Introducimos esto para que apunte bien, no lo estaba haciendo
-//          for (int i=0; i<7)
-//          nivel0 = rs.getString(1);
-//      }
-//      catch(SQLException e){
-//        try{
-//              ResultSet rs = stmt.executeQuery("SELECT japones FROM kanji WHERE kunyomi = '"+InKanji+"'" ); 
-//              rs.next(); 
-//              OutKanji = rs.getString(1);
-//        }
-//        catch(SQLException ee){
-//              OutKanji = "Sin resultados";
-//        }
-//      }
-//     return OutKanji;
-//    }
- 
+        }
+        return testdia;
+    }
 }
  
-
 
