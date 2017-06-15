@@ -64,7 +64,7 @@ public class DatabaseHandler implements IDatabaseHandler {
       String[] OutPregunta = new String[4];
       try{
           ResultSet rs;
-          rs = stmt.executeQuery("SELECT pregunta, respuesta, Opcion1, Opcion2 FROM test WHERE codigo = "+InPregunta+"" ); 
+          rs = stmt.executeQuery("SELECT enunciado, respuesta, Opcion1, Opcion2 FROM test WHERE codigo = "+InPregunta+"" ); 
           rs.next(); //Introducimos esto para que apunte bien, no lo estaba haciendo
           for (int i=0; i<4; i++){
             OutPregunta[i] = rs.getString(i+1);
@@ -77,7 +77,7 @@ public class DatabaseHandler implements IDatabaseHandler {
     }
     
    /**
-   * Seleccionamos de la tabla de test los registros con nivel 0
+   * 
    * @param  
    * @return 
    */ 
@@ -93,10 +93,10 @@ public class DatabaseHandler implements IDatabaseHandler {
             rs =stmt.executeQuery("SELECT * FROM test");
             while (rs.next()){
                 codigo = rs.getInt("codigo");
-                enunciado = rs.getString(2);
-                respuesta = rs.getString(3);
-                opcion1 = rs.getString(4);
-                opcion2 = rs.getString(5);
+                enunciado = rs.getString("enunciado");
+                respuesta = rs.getString("respuesta");
+                opcion1 = rs.getString("opcion1");
+                opcion2 = rs.getString("opcion2");
                 nivel = rs.getInt("nivel");
                 fecha = rs.getDate("fecha");
                 pregunta = new Pregunta(codigo, enunciado, respuesta, opcion1, opcion2, nivel, fecha);

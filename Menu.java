@@ -1,5 +1,4 @@
-
-    package Paneles;
+package Paneles;
 
 import database.*;
 import java.util.Date;
@@ -10,6 +9,7 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
+import java.util.Random;
 
 
 /**
@@ -18,11 +18,16 @@ import javafx.geometry.*;
  */
  
 public class Menu extends Application {
-    
-    
 
     //Enlace con la base de datos
     private IDatabaseHandler dbh;
+    
+    //Respuesta de la pregunta actual del Test Diario
+    private String respuesta;
+    
+    //Listado de preguntas para randomizarlas y la variable para recorrerlo
+//    private int[] listado = new int[50];
+//    private int ilistado;
     
     //Botones de cambio de ventana
     private Button btnMTest;
@@ -33,22 +38,32 @@ public class Menu extends Application {
     private Button btnMLeccion;
     private Button btnMCrearLeccion;
     private Button btnMLeccion1;
+    private Button btnSiguiente;
+    private Button btnMTestD;
     
     //Elementos de la ventana de Crear Leccion
     private TextField txtCLeccion;
     
     //Elementos de la ventada de Test1
+    RadioButton rdbtn0 = new RadioButton();
     RadioButton rdbtn1 = new RadioButton();
     RadioButton rdbtn2 = new RadioButton();
-    RadioButton rdbtn3 = new RadioButton();
     final ToggleGroup group = new ToggleGroup();
-//    private RadioButton rdbtn1;
-//    private RadioButton rdbtn2;
-//    private RadioButton rdbtn3;
-    private Button btnSiguiente;
+    
     Label lblPreguntaT1 = new Label();
     VBox paneMTest1 = new VBox(10);
     HBox paneRespuestasT1 = new HBox(10);
+    
+    //Elementos de la ventada de Test Diario
+    RadioButton rdbtn0D = new RadioButton();
+    RadioButton rdbtn1D = new RadioButton();
+    RadioButton rdbtn2D = new RadioButton();
+    final ToggleGroup groupD = new ToggleGroup();
+    
+    Label lblPreguntaTD = new Label();
+    VBox paneMTestD = new VBox(10);
+    HBox paneRespuestasTD = new HBox(10);
+    
     
     //Elementos de la ventana de Test2
     private TextField txtRespuesta;
@@ -67,7 +82,9 @@ public class Menu extends Application {
     private Scene sceneTest;     //Pantalla Test
     private Scene sceneTest1;    //Pantalla Test1
     private Scene sceneTest2;    //Pantalla Test2
-    
+    private Scene sceneTestD;    //Pantalla Test Diario
+
+
     //Creamos el metodo start
     //Aqui creamos los elementos de la interfaz que interactua con el usuario
     @Override public void start(Stage primaryStage)
@@ -209,12 +226,16 @@ public class Menu extends Application {
         btnMTest2 = new Button("Test2");
         btnMTest2.setOnAction(e-> SwitchTest2());
         
+        //Creamos el botÃ³n de TestD
+        btnMTestD = new Button("Test Diario");
+        btnMTestD.setOnAction(e-> SwitchTestD());
+        
         //Creamos el botÃ³n para volver al MenÃº Principal
         btnMPrincipal = new Button("Volver");
         btnMPrincipal.setOnAction(e -> SwitchMenuInicial()); 
          
         //AÃ±adimos los botones a un VBox
-        VBox paneMTest = new VBox(10,btnMTest1,btnMTest2,btnMPrincipal);
+        VBox paneMTest = new VBox(10,btnMTest1,btnMTest2,btnMTestD,btnMPrincipal);
         paneMTest.setSpacing(space);
         paneMTest.setAlignment(Pos.CENTER);
         
@@ -230,25 +251,9 @@ public class Menu extends Application {
         btnSiguiente = new Button("Aceptar");
         btnSiguiente.setOnAction(e-> SwitchSiguiente());
         
-        GeneraTest(0);
-        
-//        String[] res = dbh.gettest(0); //Consultamos en la base de datos
-//        //Creamos el Label para la pregunta
-//        lblPreguntaT1.setText(res[0]);
-//        lblPreguntaT1.setMinWidth(10);
-//        lblPreguntaT1.setAlignment(Pos.BOTTOM_CENTER);
-//        
-//        //Creamos los radio buttons
-//        rdbtn1.setToggleGroup(group); 
-//        rdbtn1.setText(res[1]);
-//        rdbtn2.setToggleGroup(group);
-//        rdbtn2.setText(res[2]);
-//        rdbtn3.setToggleGroup(group);
-//        rdbtn3.setText(res[3]);
-
         //Creamos el panel con las respuestas
-        //HBox paneRespuestasT1 = new HBox(20, rdbtn1, rdbtn2, rdbtn3);
-        paneRespuestasT1.getChildren().addAll(rdbtn1, rdbtn2, rdbtn3);
+        //HBox paneRespuestasT1 = new HBox(20, rdbtn0, rdbtn1, rdbtn2);
+        paneRespuestasT1.getChildren().addAll(rdbtn0, rdbtn1, rdbtn2);
         paneRespuestasT1.setPadding(new Insets(10));
         paneRespuestasT1.setAlignment(Pos.BASELINE_RIGHT);
         
@@ -298,7 +303,36 @@ public class Menu extends Application {
         paneMTest2.setAlignment(Pos.CENTER);
         
         //Definimos el Scene
-        sceneTest2 = new  Scene(paneMTest2,ancho,largo);  
+        sceneTest2 = new  Scene(paneMTest2,ancho,largo);
+        
+        //********************** MENU TEST DIARIO ***********************************************       
+       //Creamos el boton para volver a la Pantalla de los Test
+        btnMTest = new Button("Volver");
+        btnMTest.setOnAction(e -> SwitchTest());
+        
+        //Creamos el boton para pasar a la siguiente pregunta
+        btnSiguiente = new Button("Aceptar");
+//        btnSiguiente.setOnAction(e-> SwitchSiguienteD(ilistado));
+        btnSiguiente.setOnAction(e-> SwitchSiguienteD());
+        
+        //Creamos el panel con las respuestas
+        paneRespuestasTD.getChildren().addAll(rdbtn0D, rdbtn1D, rdbtn2D);
+        paneRespuestasTD.setPadding(new Insets(10));
+        paneRespuestasTD.setAlignment(Pos.BASELINE_RIGHT);
+        
+        //Creamos el panel con los botones
+        HBox paneBotonesTD = new HBox(20,btnMTest,btnSiguiente);
+        paneBotonesTD.setPadding(new Insets(10));
+        paneBotonesTD.setAlignment(Pos.CENTER_RIGHT);
+
+        //AÃ±adimos el VBox
+        paneMTestD.getChildren().addAll(lblPreguntaTD,paneRespuestasTD,paneBotonesTD);
+        paneMTestD.setSpacing(space);
+        paneMTestD.setAlignment(Pos.CENTER);
+        
+        //Definimos el Scene
+        sceneTestD = new  Scene(paneMTestD,ancho,largo); 
+         
     }
     
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+  
@@ -312,14 +346,81 @@ public class Menu extends Application {
         lblPreguntaT1.setText(res[0]);
         
        //Creamos los radio buttons
-        rdbtn1.setToggleGroup(group); 
-        rdbtn1.setText(res[1]);
+        rdbtn0.setToggleGroup(group); 
+        rdbtn0.setText(res[1]);
+        rdbtn1.setToggleGroup(group);
+        rdbtn1.setText(res[2]);
         rdbtn2.setToggleGroup(group);
-        rdbtn2.setText(res[2]);
-        rdbtn3.setToggleGroup(group);
-        rdbtn3.setText(res[3]);  
+        rdbtn2.setText(res[3]);  
     }
     
+      //La idea es que aqui generemos una lista de las preguntas para que aparecezcan todas pero en cualquier orden
+//    private int[] GeneraListado(int[] listado){
+//      TestDia res = dbh.getPreguntas();
+//      Random rand = new Random(); 
+//      int num_preguntas = res.getNumPreguntas();
+//      
+//      //Inicializamos a 0. Seguramente haya una forma más elegante de hacer esto
+//      for(int j=0; j<50; j++){
+//        listado[j] = 0; 
+//      }
+//      
+//      for(int j=0; j<num_preguntas; j++){
+//        listado[j] = rand.nextInt(num_preguntas); 
+//      }
+//      
+//      return listado;
+//    }
+    
+     //Función para el test Diario
+     //Aqui le pasariamos le listado he iríamos incrementando para sacar la siguiente pregunta
+     //No consigo que se actualice el numero para que pregunte la siguiente del listado
+//    private int GeneraTestD(int[] listado, int ilistado)
+      private void GeneraTestD(){
+        TestDia res = dbh.getPreguntas(); //Consultamos en la base de datos
+        Pregunta pregunta;
+        Random rand = new Random();
+        int num_preguntas = res.getNumPreguntas();
+      //      int num_preguntas = res.getNumPreguntas();
+         int i;
+         int Res0, Res1, Res2;
+        
+        i = rand.nextInt(num_preguntas);
+        pregunta = res.getPregunta(i);
+        respuesta = pregunta.getRes()[0];
+        
+        
+        Res0 = rand.nextInt(3);
+        Res1 = rand.nextInt(3);
+        while (Res1==Res0){
+            Res1 = rand.nextInt(3);
+        }
+        Res2 = rand.nextInt(3);
+        while (Res2==Res0 || Res2==Res1){
+            Res2 = rand.nextInt(3);
+        }
+//      if(ilistado<=num_preguntas){
+      //Creamos el Label para el enunciado 
+//      lblPreguntaTD.setText(res.getPregunta(listado[ilistado]).getEnun());
+        lblPreguntaTD.setText(pregunta.getEnun());
+      
+      //Creamos los radio buttons
+         rdbtn0D.setToggleGroup(groupD); 
+//      rdbtn0D.setText(res.getPregunta(listado[ilistado]).getRes()[0]);
+        rdbtn0D.setText(pregunta.getRes()[Res0]);
+         rdbtn1D.setToggleGroup(groupD);
+//      rdbtn1D.setText(res.getPregunta(listado[ilistado]).getRes()[1]);
+         rdbtn1D.setText(pregunta.getRes()[Res1]);
+         rdbtn2D.setToggleGroup(groupD);
+//      rdbtn2D.setText(res.getPregunta(listado[ilistado]).getRes()[2]); 
+        rdbtn2D.setText(pregunta.getRes()[Res2]);
+      
+//       ilistado++;
+//      }
+        
+//      return ilistado;
+      
+    }
     
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+     
     //Creamos la funcion para cuando pulsan el boton Buscar
@@ -379,9 +480,9 @@ public class Menu extends Application {
      //Para Ir a la siguiente pregunta
      public void SwitchSiguiente()
      {
+      rdbtn0.setSelected(false);
       rdbtn1.setSelected(false);
       rdbtn2.setSelected(false);
-      rdbtn3.setSelected(false);
       GeneraTest(1);
      }
      
@@ -390,7 +491,27 @@ public class Menu extends Application {
      {  
       stage.setScene(sceneTest2);
      }
+     
+     //Para Ir al Menu del TestD
+     public void SwitchTestD()
+     {  
+      GeneraTestD();
+      stage.setScene(sceneTestD);
+     }
 
+//     public void SwitchSiguienteD(int ilistado)
+     public void SwitchSiguienteD()
+     { 
+        if ((rdbtn0D.isSelected() && rdbtn0D.getText()==respuesta) || 
+            (rdbtn1D.isSelected() && rdbtn1D.getText()==respuesta) || 
+            (rdbtn2D.isSelected() && rdbtn2D.getText()==respuesta) ){
+            GeneraTestD();
+        }
+        rdbtn0D.setSelected(false);
+        rdbtn1D.setSelected(false);
+        rdbtn2D.setSelected(false);
+           
+     }
  //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+       
    
     //MAIN
